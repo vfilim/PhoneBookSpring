@@ -1,5 +1,7 @@
 package ru.academits.filimonov.phonebookspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Contact {
     private int id;
     private String firstName;

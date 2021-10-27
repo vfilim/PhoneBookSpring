@@ -45,7 +45,8 @@ new Vue({
             $.ajax({
                 type: "POST",
                 url: "/phonebook/add",
-                data: JSON.stringify(contact)
+                data: JSON.stringify(contact),
+                contentType: "application/json"
             }).done(function () {
                 self.serverValidation = false;
             }).fail(function (ajaxRequest) {
@@ -65,8 +66,7 @@ new Vue({
             var self = this;
 
             $.get("/phonebook/get/all").done(function (response) {
-                var contactListFormServer = JSON.parse(response);
-                self.rows = self.convertContactList(contactListFormServer);
+                self.rows = self.convertContactList(response);
             });
         },
         deleteContact: function (row) {
@@ -80,8 +80,7 @@ new Vue({
             var self = this;
 
             $.get("/phonebook/get/filteredContacts", {'query': self.queryString}).done(function (response) {
-                var contactListFormServer = JSON.parse(response);
-                self.rows = self.convertContactList(contactListFormServer);
+                self.rows = self.convertContactList(response);
             });
         },
         clearQueryString: function () {
@@ -100,7 +99,7 @@ new Vue({
                 }
             })
 
-            $.post("/phonebook/deleteContacts", {idsString: idsString.substr(0, idsString.length - 1)}).done(function () {
+            $.post("/phonebook/deleteContacts", {checkedRows: idsString.substr(0, idsString.length - 1)}).done(function () {
                 self.loadData();
             });
         }
