@@ -1,8 +1,11 @@
 package ru.academits.filimonov.phonebookspring.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Contact {
+    private static Gson gson = new GsonBuilder().create();
+
     private int id;
     private String firstName;
     private String lastName;
@@ -47,5 +50,9 @@ public class Contact {
 
     public void setImportant(boolean important) {
         this.important = important;
+    }
+
+    public String toString(){
+        return gson.toJson(this);
     }
 }

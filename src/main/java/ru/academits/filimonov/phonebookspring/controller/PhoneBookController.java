@@ -1,9 +1,10 @@
 package ru.academits.filimonov.phonebookspring.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,12 +14,13 @@ import ru.academits.filimonov.phonebookspring.model.Contact;
 import ru.academits.filimonov.phonebookspring.service.ContactService;
 import ru.academits.filimonov.phonebookspring.service.ContactValidation;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequestMapping("/phonebook")
 public class PhoneBookController {
+    static Logger log = LoggerFactory.getLogger(PhoneBookController.class);
+
     private ContactService phoneBookService = PhoneBook.phoneBookService;
 
     @RequestMapping("/add")
@@ -30,12 +32,16 @@ public class PhoneBookController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("The contact isn't valid");
         }
 
+        log.info("New contact added: " + contact.toString());
+
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 
     @RequestMapping("/get/all")
     @ResponseBody
     public List<Contact> getAllContacts() {
+        log.info("The full contact list is requested");
+
         return phoneBookService.getAllContacts();
     }
 
@@ -49,6 +55,8 @@ public class PhoneBookController {
     @ResponseBody
     public ResponseEntity<String> deleteContact(@RequestParam String id) {
         phoneBookService.deleteContactById(Integer.parseInt(id));
+
+        log.info("Contact {id: " + id + "} is deleted");
 
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
@@ -65,6 +73,8 @@ public class PhoneBookController {
         }
 
         phoneBookService.deleteContactsbyIds(idsArray);
+
+       log.info("Contacts with ids " + checkedRows + " are deleted");
 
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
