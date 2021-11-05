@@ -1,14 +1,25 @@
 package ru.academits.filimonov.phonebookspring.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import ru.academits.filimonov.phonebookspring.PhoneBook;
 import ru.academits.filimonov.phonebookspring.dao.ContactDao;
 import ru.academits.filimonov.phonebookspring.model.Contact;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
-
+@EnableAutoConfiguration
+@EnableScheduling
+@Component
 public class ContactService {
+    static Logger log = LoggerFactory.getLogger(ContactService.class);
+
     private ContactDao contactDao = PhoneBook.contactDao;
 
     private boolean isExistContactWithPhone(String phone) {
@@ -65,6 +76,21 @@ public class ContactService {
     public void deleteContactsbyIds(int[] ids) {
         for (int id : ids) {
             deleteContactById(id);
+        }
+    }
+
+    @Scheduled(fixedRate = 10000)
+    public void deleteRandomContact() {
+        List<Contact> contactList = getAllContacts();
+
+        if (contactList.size() != 0) {
+            Random randomizer = new Random();
+
+            Contact randomContact = contactList.get(randomizer.nextInt(contactList.size()));
+
+            deleteContactById(randomContact.getId());
+
+            log.info("Contact " + randomContact + " is randomly deleted");
         }
     }
 
