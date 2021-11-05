@@ -20,7 +20,9 @@ import java.util.stream.Collectors;
 public class ContactService {
     static Logger log = LoggerFactory.getLogger(ContactService.class);
 
-    private ContactDao contactDao = PhoneBook.contactDao;
+    private final ContactDao contactDao = PhoneBook.contactDao;
+
+    private static final Random randomizer = new Random();
 
     private boolean isExistContactWithPhone(String phone) {
         List<Contact> contactList = contactDao.getAllContacts();
@@ -84,8 +86,6 @@ public class ContactService {
         List<Contact> contactList = getAllContacts();
 
         if (contactList.size() != 0) {
-            Random randomizer = new Random();
-
             Contact randomContact = contactList.get(randomizer.nextInt(contactList.size()));
 
             deleteContactById(randomContact.getId());
