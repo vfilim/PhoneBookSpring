@@ -26,13 +26,17 @@ public class PhoneBookController {
     @RequestMapping("/add")
     @ResponseBody
     public ResponseEntity<String> addContact(@RequestBody Contact contact) {
+        log.info("Adding new contact requested: " + contact);
+
         ContactValidation contactValidation = phoneBookService.addContact(contact);
 
         if (!contactValidation.isValid()) {
+            log.error("Adding new contact error. Contact isn't valid: " + contactValidation.getError());
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("The contact isn't valid");
         }
 
-        log.info("New contact added: " + contact.toString());
+        log.info("New contact added: " + contact);
 
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
@@ -48,12 +52,16 @@ public class PhoneBookController {
     @RequestMapping("/get/filteredContacts")
     @ResponseBody
     public List<Contact> getFilteredContacts(@RequestParam String query) {
+        log.info("Filtered contact list is requested with query: " + query);
+
         return phoneBookService.getFilteredContacts(query);
     }
 
     @RequestMapping("/deleteContact")
     @ResponseBody
     public ResponseEntity<String> deleteContact(@RequestParam String id) {
+        log.info("The contact deletion is requested. Id: " + id);
+
         phoneBookService.deleteContactById(Integer.parseInt(id));
 
         log.info("Contact {id: " + id + "} is deleted");
@@ -64,6 +72,8 @@ public class PhoneBookController {
     @RequestMapping("/deleteContacts")
     @ResponseBody
     public ResponseEntity<String> deleteContacts(@RequestParam String checkedRows) {
+        log.info("The contacts deletion is requested. Ids: " + checkedRows);
+
         String[] idsStringArray = checkedRows.split(",");
 
         int[] idsArray = new int[idsStringArray.length];
