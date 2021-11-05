@@ -74,7 +74,7 @@ public class PhoneBookController {
 
         phoneBookService.deleteContactsbyIds(idsArray);
 
-       log.info("Contacts with ids " + checkedRows + " are deleted");
+        log.info("Contacts with ids " + checkedRows + " are deleted");
 
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
