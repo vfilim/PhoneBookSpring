@@ -2,11 +2,11 @@ package ru.academits.filimonov.phonebookspring.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import ru.academits.filimonov.phonebookspring.PhoneBook;
+import org.springframework.stereotype.Service;
 import ru.academits.filimonov.phonebookspring.dao.ContactDao;
 import ru.academits.filimonov.phonebookspring.model.Contact;
 
@@ -16,13 +16,18 @@ import java.util.stream.Collectors;
 
 @EnableAutoConfiguration
 @EnableScheduling
-@Component
+@Service
 public class ContactService {
     static Logger log = LoggerFactory.getLogger(ContactService.class);
 
-    private final ContactDao contactDao = PhoneBook.contactDao;
+    private final ContactDao contactDao;
 
     private static final Random randomizer = new Random();
+
+    @Autowired
+    public ContactService(ContactDao contactDao){
+        this.contactDao = contactDao;
+    }
 
     private boolean isExistContactWithPhone(String phone) {
         List<Contact> contactList = contactDao.getAllContacts();

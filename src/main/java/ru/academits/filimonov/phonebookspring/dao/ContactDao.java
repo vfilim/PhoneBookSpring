@@ -2,37 +2,14 @@ package ru.academits.filimonov.phonebookspring.dao;
 
 import ru.academits.filimonov.phonebookspring.model.Contact;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class ContactDao {
-    private List<Contact> contactList = new ArrayList<>();
-    private AtomicInteger idSequence = new AtomicInteger(0);
+public interface ContactDao extends GenericDao<Contact, Long> {
+    List<Contact> getAllContacts();
 
-    public ContactDao() {
-        Contact contact = new Contact();
-        contact.setId(getNewId());
-        contact.setFirstName("Иван");
-        contact.setLastName("Иванов");
-        contact.setPhone("9123456789");
-        contactList.add(contact);
-    }
+    void add(Contact contact);
 
-    private int getNewId() {
-        return idSequence.addAndGet(1);
-    }
+    void deleteById(int id);
 
-    public List<Contact> getAllContacts() {
-        return contactList;
-    }
-
-    public void add(Contact contact) {
-        contact.setId(getNewId());
-        contactList.add(contact);
-    }
-
-    public void deleteById(int id) {
-        contactList.removeIf(x -> x.getId() == id);
-    }
+    List<Contact> findByPhone(String phone);
 }

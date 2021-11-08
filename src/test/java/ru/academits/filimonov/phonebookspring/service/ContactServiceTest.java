@@ -3,14 +3,18 @@ package ru.academits.filimonov.phonebookspring.service;
 import org.junit.jupiter.api.*;
 import ru.academits.filimonov.phonebookspring.model.Contact;
 
+import java.util.List;
+
 class ContactServiceTest {
-    private static ContactService contactService = new ContactService();
+    private ContactService contactService;
     int contactsCount = 5;
+
+    public ContactServiceTest(ContactService contactService) {
+        this.contactService = contactService;
+    }
 
     @BeforeEach
     void setUp() {
-        contactService.deleteContactById(1);
-
         for (int i = 0; i < contactsCount; i++) {
             Contact newContact = new Contact();
 
@@ -24,7 +28,11 @@ class ContactServiceTest {
 
     @AfterEach
     void tearDown() {
-        ContactService contactService = new ContactService();
+        List<Contact> list = contactService.getAllContacts();
+
+        for (Contact contact : list) {
+            contactService.deleteContactById(contact.getId());
+        }
     }
 
     @Test

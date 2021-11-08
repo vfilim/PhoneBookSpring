@@ -2,14 +2,31 @@ package ru.academits.filimonov.phonebookspring.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "contact")
 public class Contact {
     private static Gson gson = new GsonBuilder().create();
 
+    @Id
+    @GenericGenerator(name="kaugen" , strategy="increment")
+    @GeneratedValue(generator="kaugen")
+    @Column
     private int id;
+
+    @Column
     private String firstName;
+
+    @Column
     private String lastName;
+
+    @Column
     private String phone;
+
+    @Column
     private boolean important;
 
     public int getId() {
