@@ -12,8 +12,8 @@ public class Contact {
     private static Gson gson = new GsonBuilder().create();
 
     @Id
-    @GenericGenerator(name="kaugen" , strategy="increment")
-    @GeneratedValue(generator="kaugen")
+    @GenericGenerator(name = "kaugen", strategy = "increment")
+    @GeneratedValue(generator = "kaugen")
     @Column
     private int id;
 
@@ -69,7 +69,7 @@ public class Contact {
         this.important = important;
     }
 
-    public String toString(){
+    public String toString() {
         return gson.toJson(this);
     }
 }

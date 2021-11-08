@@ -25,7 +25,7 @@ public class ContactService {
     private static final Random randomizer = new Random();
 
     @Autowired
-    public ContactService(ContactDao contactDao){
+    public ContactService(ContactDao contactDao) {
         this.contactDao = contactDao;
     }
 
