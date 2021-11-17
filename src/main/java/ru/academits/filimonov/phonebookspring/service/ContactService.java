@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@EnableAutoConfiguration
-@EnableScheduling
 @Service
 public class ContactService {
     static Logger log = LoggerFactory.getLogger(ContactService.class);
@@ -86,7 +84,6 @@ public class ContactService {
         }
     }
 
-    @Scheduled(fixedRate = 10000)
     public void deleteRandomContact() {
         List<Contact> contactList = getAllContacts();
 
@@ -109,5 +106,9 @@ public class ContactService {
                         x.getLastName().contains(substring) ||
                         x.getPhone().contains(substring))
         ).collect(Collectors.toList());
+    }
+
+    public List<Contact> getContactsByPhone(String phone) {
+        return contactDao.findByPhone(phone);
     }
 }
