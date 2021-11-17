@@ -1,14 +1,18 @@
 package ru.academits.filimonov.phonebookspring.service;
 
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.academits.filimonov.phonebookspring.model.Contact;
 
 import java.util.List;
 
+@SpringBootTest
 class ContactServiceTest {
-    private ContactService contactService;
+    private ContactService contactService ;
     int contactsCount = 5;
 
+    @Autowired
     public ContactServiceTest(ContactService contactService) {
         this.contactService = contactService;
     }
@@ -74,7 +78,11 @@ class ContactServiceTest {
 
     @Test
     void deleteRandomContact() {
+        System.out.println(contactService.getAllContacts().size());
+
         contactService.deleteRandomContact();
+
+        System.out.println(contactService.getAllContacts().size());
 
         Assertions.assertEquals(contactsCount - 1, contactService.getAllContacts().size());
     }
