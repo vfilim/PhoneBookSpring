@@ -4,17 +4,12 @@ import org.springframework.stereotype.Repository;
 import ru.academits.filimonov.phonebookspring.model.Contact;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
-public class ContactDaoImpl extends GenericDaoImpl<Contact, Long> implements ContactDao {
+public class ContactDaoImpl extends GenericDaoImpl<Contact, Integer> implements ContactDao {
     public ContactDaoImpl() {
         super(Contact.class);
-//        Contact contact = new Contact();
-//        contact.setFirstName("Иван");
-//        contact.setLastName("Иванов");
-//        contact.setPhone("9123456789");
-//
-//        create(contact);
     }
 
     @Override
@@ -24,7 +19,10 @@ public class ContactDaoImpl extends GenericDaoImpl<Contact, Long> implements Con
 
     @Override
     public List<Contact> findByPhone(String phone) {
-        return null;
+        return getAllContacts()
+                .stream()
+                .filter(x -> x.getPhone().contains(phone))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -34,6 +32,6 @@ public class ContactDaoImpl extends GenericDaoImpl<Contact, Long> implements Con
 
     @Override
     public void deleteById(int id) {
-
+        remove(getById(id));
     }
 }

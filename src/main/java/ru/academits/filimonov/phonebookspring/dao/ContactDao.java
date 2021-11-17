@@ -4,7 +4,7 @@ import ru.academits.filimonov.phonebookspring.model.Contact;
 
 import java.util.List;
 
-public interface ContactDao extends GenericDao<Contact, Long> {
+public interface ContactDao extends GenericDao<Contact, Integer> {
     List<Contact> getAllContacts();
 
     void add(Contact contact);
